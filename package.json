@@ -1,0 +1,19 @@
+{
+  "name": "pdf-booklet",
+  "version": "1.0.0",
+  "description": "reorder pdf for booklet printing",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index",
+    "inspect": "node --inspect-brk src/index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alejandro Hernández <picanteverde@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "pdf-lib": "^1.11.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.10.0"
+  }
+}
