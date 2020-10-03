@@ -3,14 +3,19 @@ const { getName, generateName, clear, read, write } = require('./files')
 
 const booklet = async (file) => {
   const name = getName(file)
-  const firstName = generateName('../output', name, 'first')
-  const secondName = generateName('../output', name, 'second')
-  await clear(firstName)
-  await clear(secondName)
+  const frontName = generateName('../output', name, 'front')
+  const backName = generateName('../output', name, 'back')
+  await clear(frontName)
+  await clear(backName)
 
-  const pdf = await PDFDocument.load(await read(file))
-  const first = await PDFDocument.create()
-  const second = await PDFDocument.create()
+  let pdf
+  try {
+    pdf = await PDFDocument.load(await read(file))
+  } catch(e){
+    console.log(`Error reading ${file}\n${e}`)
+  }
+  const front = await PDFDocument.create()
+  const back = await PDFDocument.create()
 
   const pagesPrev = pdf.getPages().length
   const rest = pagesPrev % 4
@@ -24,18 +29,18 @@ const booklet = async (file) => {
   const pages = pdf.getPages().length
   const l = pages / 2
   for (let i = 0; i < l; i += 2){
-    const [a, b] = await first.copyPages(pdf, [i, pages-i-1])
-    const [c, d] = await second.copyPages(pdf, [i+1, pages-i-2])
-    first.addPage(b)
-    first.addPage(a)
-    second.addPage(c)
-    second.addPage(d)
+    const [a, b] = await front.copyPages(pdf, [i, pages-i-1])
+    const [c, d] = await back.copyPages(pdf, [i+1, pages-i-2])
+    front.addPage(b)
+    front.addPage(a)
+    back.addPage(c)
+    back.addPage(d)
   }
   
-  const bufFirst = await first.save()
-  const bufSecond = await second.save()
-  await write(bufFirst, firstName)
-  await write(bufSecond, secondName)
+  const bufFront = await front.save()
+  const bufBack = await back.save()
+  await write(bufFront, frontName)
+  await write(bufBack, backName)
 
 }
 

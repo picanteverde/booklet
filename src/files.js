@@ -12,6 +12,8 @@ const getDir = (dir) => path.join(__dirname, dir)
 
 const getName = (file) => path.basename(file, path.extname(file))
 
+const isPdf = (file) => path.extname(file).toLowerCase() === 'pdf'
+
 const generateName = (dir, name, variant) =>
   path.join(path.join(__dirname, dir), `${variant ? `${variant}-` : ''}${name}.pdf`)
 
@@ -40,5 +42,6 @@ module.exports = {
   getDir,
   clear,
   read,
-  write
+  write,
+  isPdf
 }
