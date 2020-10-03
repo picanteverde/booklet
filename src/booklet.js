@@ -8,6 +8,8 @@ const booklet = async (file) => {
   await clear(frontName)
   await clear(backName)
 
+  console.log(`Processing: ${file}`)
+
   let pdf
   try {
     pdf = await PDFDocument.load(await read(file))
@@ -29,6 +31,7 @@ const booklet = async (file) => {
   const pages = pdf.getPages().length
   const l = pages / 2
   for (let i = 0; i < l; i += 2){
+    console.log(`${(pages - (pages - i))/pages * 100}%`)
     const [a, b] = await front.copyPages(pdf, [i, pages-i-1])
     const [c, d] = await back.copyPages(pdf, [i+1, pages-i-2])
     front.addPage(b)
